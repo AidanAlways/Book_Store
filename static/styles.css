@@ -35,6 +35,12 @@ img {
     margin-right: auto;
 }
 
+.site-nav a[href="/"]:not(.brand) {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid #fff;
+    border-radius: 4px;
+}
+
 main {
     padding: 1rem 1.5rem;
 }
