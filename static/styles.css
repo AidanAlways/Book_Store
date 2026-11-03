@@ -1,0 +1,13 @@
+body {
+  background-color: lightblue;
+}
+
+h1 {
+  font-weight: bold;
+  color: #333333;
+}
+
+img {
+  border: 2px solid black;
+  border-radius: 8px;
+}
