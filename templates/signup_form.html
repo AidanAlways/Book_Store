@@ -1,16 +1,17 @@
-<head>
-    <h1>Aidan's big ol' book store - account creation</h1>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
+{% extends "base.html" %}
 
-<form method="POST" action="/users">
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username"><br>
+{% block title %}Sign up{% endblock %}
 
-    <label for="password">Password</label>
-    <input type="text" id="password" name="password"><br>
+{% block content %}
+    <h1>Account creation</h1>
 
-    <input type="submit" value="Submit">
-</form>
+    <form method="POST" action="/users">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username"><br>
 
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password"><br>
 
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

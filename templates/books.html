@@ -1,28 +1,22 @@
-<head>
-    <h1>Aidan's big ol' book store</h1>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
+{% extends "base.html" %}
 
-<body>
-<main>
+{% block title %}Books{% endblock %}
+
+{% block content %}
     <h1>Available Books</h1>
     <ul>
-        {% for book in books | sort(attribute = "author")%}
-            <li>{{ book.title}} by {{ book.author }}</li>
+        {% for book in books | sort(attribute="author") %}
+            <li>{{ book.title }} by {{ book.author }}</li>
         {% endfor %}
     </ul>
 
-</main>
-</body>
+    <form method="POST" action="/books">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title"><br>
 
-<form method="POST" action="/books">
-    <label for="title">Title</label>
-    <input type="text" id="title" name="title"><br>
+        <label for="author">Author</label>
+        <input type="text" id="author" name="author"><br>
 
-    <label for="author">Author</label>
-    <input type="text" id="author" name="author"><br>
-
-    <input type="submit" value="Submit">
-</form>
-
-
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

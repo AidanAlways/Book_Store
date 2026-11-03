@@ -1,7 +1,11 @@
-<header>Aidan's big ol' bookstore</header>
+{% extends "base.html" %}
 
-<h1>Welcome to the book store o/</h1>
+{% block title %}Home{% endblock %}
 
-<main>The Lord of the Rings is still the best book ever written.</main>
+{% block content %}
+    <h1>Welcome to the book store o/</h1>
 
-<nav>You can see Hello <a href="/hello">here</a></nav>
+    <p>The Lord of the Rings is still the best book ever written.</p>
+
+    <p>You can see Hello <a href="/hello">here</a></p>
+{% endblock %}

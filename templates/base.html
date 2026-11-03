@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Aidan's big ol' book store{% endblock %}</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <nav class="site-nav">
+        <a class="brand" href="/">Aidan's big ol' book store</a>
+        <a href="/books" {% if request.path == "/books" %}class="active"{% endif %}>Books</a>
+        <a href="/team" {% if request.path == "/team" %}class="active"{% endif %}>Team</a>
+        <a href="/users/new" {% if request.path == "/users/new" %}class="active"{% endif %}>Sign up</a>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

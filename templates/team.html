@@ -1,7 +1,13 @@
-<h1>Team</h1>
-<p>Aidan's big ol' book store was created by...</p>
-<ul>
-    {% for team_member in team %}
-        <li>{{ team_member }}</li>
-    {% endfor %}
-</ul>
+{% extends "base.html" %}
+
+{% block title %}Team{% endblock %}
+
+{% block content %}
+    <h1>Team</h1>
+    <p>Aidan's big ol' book store was created by...</p>
+    <ul>
+        {% for team_member in team %}
+            <li>{{ team_member }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

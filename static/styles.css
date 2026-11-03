@@ -11,3 +11,30 @@ img {
   border: 2px solid black;
   border-radius: 8px;
 }
+
+.site-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0.75rem 1.5rem;
+    background: #222;
+}
+
+.site-nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+    text-decoration: underline;
+}
+
+.site-nav .brand {
+    font-weight: bold;
+    margin-right: auto;
+}
+
+main {
+    padding: 1rem 1.5rem;
+}
