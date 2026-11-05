@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Films{% endblock %}
+
+{% block content %}
+    <h1>Available Films</h1>
+
+    {% if films %}
+        <ul>
+            {% for film in films %}
+                <li>{{ film.title }}, {{ film.release_year }} by {{ film.director }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No films yet.</p>
+    {% endif %}
+
+    <form method="POST" action="/films">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title"><br>
+
+        <label for="director">Director</label>
+        <input type="text" id="director" name="director"><br>
+
+        <label for="release_year">Release_Year (Must be year)</label>
+        <input type="text" id="release_year" name="release_year"><br>
+
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

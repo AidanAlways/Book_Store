@@ -4,7 +4,6 @@ import sys
 import pytest
 from playwright.sync_api import Page, expect
 
-# Lets the tests import app and database_connection from the project root
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(PROJECT_ROOT)
 
@@ -31,6 +30,15 @@ EXPECTED_AUTHORS = [
     {"name": "Zetta Elliott", "dob": "1979-11-11"},
 ]
 
+SEEDED_FILMS = [
+    "Alien, 1979 by Ridley Scott",
+    "Blade Runner, 1982 by Ridley Scott",
+    "Lost in Translation, 2003 by Sofia Coppola",
+    "Clayface, 2026 by James Watkins",
+    "American Psycho, 2000 by Mary Harron",
+    "King Kong, 2005 by Peter Jackson",
+    "La La Land, 2017 by Damien Chazelle",
+]
 
 @pytest.fixture(autouse=True)
 def reset_database():
@@ -45,7 +53,7 @@ def client():
     return app.test_client()
 
 
-# Flask test client tests (no browser needed)
+# Flask test 
 
 def test_get_books_returns_a_200(client):
     response = client.get("/books")
@@ -68,8 +76,28 @@ def test_get_authors_returns_all_the_authors(client):
     response = client.get("/authors")
     assert response.json == EXPECTED_AUTHORS
 
+def test_get_films_returns_a_200(client):
+    response = client.get("/films")
+    assert response.status_code == 200
 
-# Playwright tests (the server must be running on port 5001)
+
+def test_get_films_lists_all_the_films(client):
+    html = client.get("/films").get_data(as_text=True)
+    for film in SEEDED_FILMS:
+        title = film.split(",")[0]
+        assert title in html
+
+def test_user_can_create_a_film(page: Page):
+    page.goto("http://127.0.0.1:5001/films")
+    page.get_by_label("title").fill("Pulp Fiction")
+    page.get_by_label("release_year").fill("1994")
+    page.get_by_label("director").fill("Quentin Tarantino")
+    page.get_by_role("button", name="Submit").click()
+    films = page.locator('li')
+    new_film = films.all_inner_texts()[-1]
+    assert new_film == "Pulp Fiction, 1994 by Quentin Tarantino"
+
+# Playwright tests
 
 def test_landing_page_has_title(page: Page):
     page.goto(BASE_URL)
@@ -91,12 +119,20 @@ def test_books_page_lists_all_books(page: Page):
 
 
 def test_new_book_appears_in_the_list(page: Page):
-    page.goto(f"{BASE_URL}/books")
-    page.get_by_label("Title").fill("The Chronicles of Geronimo (the cat)")
+    connection = DatabaseConnection()
+    connection.connect()
+    connection.execute("TRUNCATE TABLE users;")
+    connection.execute("INSERT INTO users (username, password) values ('test', '1234');")
+
+    page.goto("http://localhost:5001/sessions/new")
+    page.get_by_label("username").fill("test")
+    page.get_by_label("password").fill("1234")
+    page.get_by_role("button").click()
+
+    page.goto("http://localhost:5001/books")
+    page.get_by_label("Title").fill("The Chroicles of Geronimo (the cat)")
     page.get_by_label("Author").fill("Geronimo")
     page.get_by_role("button", name="Submit").click()
-
-    # sorted by author, "Geronimo" lands third
-    expect(page.locator("li").nth(2)).to_have_text(
-        "The Chronicles of Geronimo (the cat) by Geronimo"
-    )
+    books = page.locator('li')
+    new_book = books.all_inner_texts()[2]
+    assert new_book == "The Chroicles of Geronimo (the cat) by Geronimo"

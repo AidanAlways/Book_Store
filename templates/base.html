@@ -11,6 +11,7 @@
         <a class="brand" href="/">Aidan's big ol' book store</a>
         <a href="/" {% if request.path == "/" %}class="active"{% endif %}>Home</a>
         <a href="/books" {% if request.path == "/books" %}class="active"{% endif %}>Books</a>
+        <a href="/films" {% if request.path == "/films" %}class="active"{% endif %}>Films</a>
         <a href="/team" {% if request.path == "/team" %}class="active"{% endif %}>Team</a>
         <a href="/users/new" {% if request.path == "/users/new" %}class="active"{% endif %}>Sign up</a>
     </nav>

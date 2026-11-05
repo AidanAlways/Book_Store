@@ -16,3 +16,14 @@ class UserRepository:
             item = User(row["username"], row["password"], row["id"])
             users.append(item)
         return users
+
+    def find_by_username(self, username):
+        user_details = self._connection.execute(
+            'SELECT * FROM users WHERE username = %s', [username]
+        )[0]
+
+        return User(
+            user_details["username"],
+            user_details["password"],
+            user_details["id"]
+        )
