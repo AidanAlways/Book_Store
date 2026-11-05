@@ -28,7 +28,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.13'
 
       - name: Install dependencies
         run: |
@@ -39,8 +39,7 @@ jobs:
       - name: Seed database
         run: |
           psql -h 127.0.0.1 -U runner book_store_test -f seeds/books.sql
-          psql -h 127.0.0.1 -U runner book_store_test -f seeds/users.sql
-
+          
       - name: Start web app
         run: nohup python app.py > app.log 2>&1 &
 
