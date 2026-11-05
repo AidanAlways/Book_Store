@@ -56,11 +56,22 @@ def get_all_films():
     return render_template("films.html", films=film_repository.all())
 
 @app.route("/films", methods=["POST"])
-def create_a_new_film():
+def create_film():
     film_repository = FilmRepository(get_connection())
-    film_details = request.form
-    film = Film(title=film_details["title"], director=film_details["director"], release_year=film_details["release_year"])
-    film_repository.create_film(film)
+    details = request.form
+
+    try:
+        release_year = int(details.get("release_year", ""))
+    except ValueError:
+        return render_template(
+            "films.html",
+            films=film_repository.all(),
+            error="Release year must be a whole number.",
+        ), 400
+
+    film_repository.create_film(
+        Film(details["title"], details["director"], release_year)
+    )
     return redirect("/films")
 
 

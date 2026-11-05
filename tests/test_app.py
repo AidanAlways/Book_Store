@@ -89,14 +89,14 @@ def test_get_films_lists_all_the_films(client):
 
 def test_user_can_create_a_film(page: Page):
     page.goto("http://127.0.0.1:5001/films")
-    page.get_by_label("title").fill("Pulp Fiction")
-    page.get_by_label("release_year").fill("1994")
-    page.get_by_label("director").fill("Quentin Tarantino")
+    page.get_by_label("Title").fill("Pulp Fiction")
+    page.get_by_label("Director").fill("Quentin Tarantino")
+    page.get_by_label("Release year").fill("1994")
     page.get_by_role("button", name="Submit").click()
-    films = page.locator('li')
-    new_film = films.all_inner_texts()[-1]
-    assert new_film == "Pulp Fiction, 1994 by Quentin Tarantino"
 
+    expect(page.locator("li").last).to_have_text(
+        "Pulp Fiction, 1994 by Quentin Tarantino"
+    )
 # Playwright tests
 
 def test_landing_page_has_title(page: Page):
@@ -136,3 +136,14 @@ def test_new_book_appears_in_the_list(page: Page):
     books = page.locator('li')
     new_book = books.all_inner_texts()[2]
     assert new_book == "The Chroicles of Geronimo (the cat) by Geronimo"
+
+def test_post_films_rejects_a_non_numeric_year(client):
+    response = client.post("/films", data={
+        "title": "Heat",
+        "director": "Michael Mann",
+        "release_year": "nineteen ninety-five",
+    })
+    assert response.status_code == 400
+
+    html = client.get("/films").get_data(as_text=True)
+    assert "Heat" not in html

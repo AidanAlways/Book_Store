@@ -44,3 +44,7 @@ img {
 main {
     padding: 1rem 1.5rem;
 }
+
+.error {
+    color: #b00020;
+}
